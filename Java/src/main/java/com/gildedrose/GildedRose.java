@@ -4,6 +4,7 @@ class GildedRose {
     private static final String AGED_BRIE = "Aged Brie";
     private static final String SULFURAS = "Sulfuras, Hand of Ragnaros";
     private static final String BACKSTAGE_CONCERT = "Backstage passes to a TAFKAL80ETC concert";
+    private static final String CONJURED = "Conjured Mana Cake";
 
     Item[] items;
 
@@ -13,25 +14,16 @@ class GildedRose {
 
     public void updateQuality() {
         for (Item item: items) {
-            if (!AGED_BRIE.equals(item.name)
-                    && !BACKSTAGE_CONCERT.equals(item.name)) {
-                if (item.quality > 0) {
-                    if (!SULFURAS.equals(item.name)) {
-                        decreaseQuality(item);
-                    }
-                }
+            if (!AGED_BRIE.equals(item.name) && !BACKSTAGE_CONCERT.equals(item.name)) {
+                decreaseQuality(item);
             } else {
-                if (item.quality < 50) {
-                    increaseQuality(item);
-
-                    if (BACKSTAGE_CONCERT.equals(item.name)) {
-                        if (item.sellIn < 11) {
-                            increaseQuality(item);
-                        }
-
-                        if (item.sellIn < 6) {
-                            increaseQuality(item);
-                        }
+                increaseQuality(item);
+                if (BACKSTAGE_CONCERT.equals(item.name)) {
+                    if (item.sellIn < 11) {
+                        increaseQuality(item);
+                    }
+                    if (item.sellIn < 6) {
+                        increaseQuality(item);
                     }
                 }
             }
@@ -43,11 +35,7 @@ class GildedRose {
             if (item.sellIn < 0) {
                 if (!AGED_BRIE.equals(item.name)) {
                     if (!BACKSTAGE_CONCERT.equals(item.name)) {
-                        if (item.quality > 0) {
-                            if (!item.name.equals(SULFURAS)) {
-                                decreaseQuality(item);
-                            }
-                        }
+                        decreaseQuality(item);
                     } else {
                         item.quality = 0;
                     }
@@ -65,6 +53,13 @@ class GildedRose {
     }
 
     private void decreaseQuality(Item item) {
-        item.quality = item.quality - 1;
+        if (item.quality > 0) {
+            if (!SULFURAS.equals(item.name)) {
+                item.quality = item.quality - 1;
+            }
+            if(CONJURED.equals(item.name)) {
+                item.quality = item.quality - 1;
+            }
+        }
     }
 }
