@@ -14,17 +14,14 @@ class GildedRose {
 
     public void updateQuality() {
         for (Item item: items) {
-            if (!AGED_BRIE.equals(item.name) && !BACKSTAGE_CONCERT.equals(item.name)) {
-                decreaseQuality(item);
-            } else {
-                increaseQuality(item);
-                if (BACKSTAGE_CONCERT.equals(item.name)) {
-                    if (item.sellIn < 11) {
-                        increaseQuality(item);
-                    }
-                    if (item.sellIn < 6) {
-                        increaseQuality(item);
-                    }
+            decreaseQuality(item, false);
+            increaseQuality(item);
+            if (BACKSTAGE_CONCERT.equals(item.name)) {
+                if (item.sellIn < 11) {
+                    increaseQuality(item);
+                }
+                if (item.sellIn < 6) {
+                    increaseQuality(item);
                 }
             }
 
@@ -33,29 +30,28 @@ class GildedRose {
             }
 
             if (item.sellIn < 0) {
-                if (!AGED_BRIE.equals(item.name)) {
-                    if (!BACKSTAGE_CONCERT.equals(item.name)) {
-                        decreaseQuality(item);
-                    } else {
-                        item.quality = 0;
-                    }
-                } else {
-                    increaseQuality(item);
-                }
+                decreaseQuality(item, true);
+                increaseQuality(item);
             }
         }
     }
 
     private void increaseQuality(Item item) {
-        if (item.quality < 50) {
-            item.quality = item.quality + 1;
+        if(AGED_BRIE.equals(item.name) || BACKSTAGE_CONCERT.equals(item.name)) {
+            if (item.quality < 50) {
+                item.quality = item.quality + 1;
+            }
         }
     }
 
-    private void decreaseQuality(Item item) {
+    private void decreaseQuality(Item item, boolean isSellLessZero) {
         if (item.quality > 0) {
-            if (!SULFURAS.equals(item.name)) {
-                item.quality = item.quality - 1;
+            if (!AGED_BRIE.equals(item.name) && !BACKSTAGE_CONCERT.equals(item.name) && !SULFURAS.equals(item.name)) {
+                 if(isSellLessZero) {
+                     item.quality = 0;
+                 } else {
+                     item.quality = item.quality - 1;
+                 }
             }
             if(CONJURED.equals(item.name)) {
                 item.quality = item.quality - 1;
