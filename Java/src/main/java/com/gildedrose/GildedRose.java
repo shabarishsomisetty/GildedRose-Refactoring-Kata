@@ -44,10 +44,10 @@ class GildedRose {
         }
     }
 
-    private void decreaseQuality(Item item, boolean isSellLessZero) {
+    private void decreaseQuality(Item item, boolean isSellLessThanZero) {
         if (item.quality > 0) {
             if (!AGED_BRIE.equals(item.name) && !BACKSTAGE_CONCERT.equals(item.name) && !SULFURAS.equals(item.name)) {
-                 if(isSellLessZero) {
+                 if(isSellLessThanZero) {
                      item.quality = 0;
                  } else {
                      item.quality = item.quality - 1;
